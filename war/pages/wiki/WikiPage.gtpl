@@ -39,8 +39,8 @@
 		if (request.page) {
 	%>
 		<div class="grid_12 body" id="wikiPage_view">
-			<div class="grid_6 alpha">
-				<h1>${request.page.page}</h1>				
+			<div class="grid_6 alpha pageHeader">
+				${request.page.page}				
 			</div>
 			<div class="grid_6 omega right_align detail">
 				<div>
@@ -76,8 +76,17 @@
 		
 	<%  } else { %>
 	 <div class="grid_12 body">
-		<h1>Wiki Pages</h1>
-		<p>
+		<div class="grid_8 alpha left_align pageHeader">	
+			Wiki Pages
+		</div>
+		<div class="grid_4 omega right_align pageToolbar">
+			<form method="POST" action="${request.baseUrl}">
+				<input type="hidden" name="action" value="show" />
+				<b>New Page</b> <input type="text" name="page" value="" /><input type="submit" value="Create" />&nbsp;|&nbsp;<a href="${request.baseUrl}?action=deleteAll">Clear All</a>
+			</form>		
+		</div>
+		<div class="clear"></div>
+		<div class="grid_12">
 			<ul>
 		    <%
 				for(Entity entity in request.entities)
@@ -92,13 +101,7 @@
 			</ul>
 		</p>
 			
-		
-		<form method="POST" action="${request.baseUrl}">
-			<input type="hidden" name="action" value="show" />
-			<b>New Page</b> <input type="text" name="page" value="" /><input type="submit" value="Create" />&nbsp;|&nbsp;<a href="${request.baseUrl}?action=deleteAll">Clear All</a>
-		</form>
-		
-		
+		</div>
 	</div><!--  End of Grid_12 -->
 	
 	<%  }  %>

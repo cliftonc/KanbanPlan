@@ -47,6 +47,36 @@ show = {
 	
 }	
 
+jsonlist = {
+
+	def ofy = dao.ofy()
+	Query<Project> q
+	
+	if(params.search) {
+		q = ofy.query(Project.class).filter("id =", params.search).filter("owner =", user);
+	} else {
+		q = ofy.query(Project.class).filter("owner =", user);
+	}
+	
+	ObjectMapper mapper = new ObjectMapper();
+	response.contentType = "application/json"
+	
+	def results = []
+	
+	for(Project p in q) {
+		results << p
+	}
+	
+	def offset = params.offset ? params.offset : 0
+	def json = ["status":"ok","offset":offset,"count":results.size,"results":results]
+	
+	mapper.writeValue(out, json);
+	
+		
+	
+
+}
+
 update = {
 				
 	def projectExists = true
@@ -99,8 +129,12 @@ delete = {
 	def ofy = dao.ofy()
 	Project project = ofy.get(new Key<Project>(Project.class, params.project));    // equivalent, more convenient	
 	ofy.delete(project);
-	redirect(baseUrl)
-	
+
+	ObjectMapper mapper = new ObjectMapper();
+	response.contentType = "application/json"
+	def status = ["status":"ok","project":project.id,"statusDescription":"Project found and deleted."]
+	mapper.writeValue(out, status);
+
 }
 
 deleteAll = {
