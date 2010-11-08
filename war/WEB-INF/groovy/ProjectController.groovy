@@ -68,7 +68,7 @@ jsonlist = {
 	}
 	
 	def offset = params.offset ? params.offset : 0
-	def json = ["status":"ok","offset":offset,"count":results.size,"results":results]
+	def json = ["status":"ok","offset":offset,"count":results.size(),"results":results]
 	
 	mapper.writeValue(out, json);
 	
